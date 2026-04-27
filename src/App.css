@@ -1,0 +1,84 @@
+@media (max-width: 900px) {
+    .app-shell {
+      padding: 12px !important;
+    }
+  
+    .app-header {
+      padding: 16px !important;
+      align-items: stretch !important;
+    }
+  
+    .app-header > div {
+      width: 100%;
+    }
+  
+    .manage-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+  
+    .table-view {
+      max-width: 100% !important;
+    }
+  
+    .spell-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .app-shell {
+      padding: 8px !important;
+    }
+  
+    .app-header {
+      border-radius: 14px !important;
+      padding: 14px !important;
+    }
+  
+    .app-header h1 {
+      font-size: 24px !important;
+    }
+  
+    .app-header p {
+      font-size: 13px !important;
+    }
+  
+    .app-header button,
+    .app-header select,
+    .app-header input {
+      width: 100% !important;
+    }
+  
+    .app-header > div {
+      min-width: 0 !important;
+    }
+  
+    .manage-grid section,
+    .table-view section {
+      padding: 14px !important;
+      border-radius: 14px !important;
+    }
+  
+    .spell-grid article {
+      padding: 14px !important;
+      border-radius: 14px !important;
+    }
+  
+    .spell-grid h3 {
+      font-size: 18px !important;
+    }
+  
+    .spell-grid p {
+      font-size: 13px !important;
+    }
+  
+    .spell-grid div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  
+    textarea {
+      min-height: 70px !important;
+    }
+  }

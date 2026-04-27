@@ -653,8 +653,8 @@ export default function App() {
   }
 
   return (
-    <div style={styles.page}>
-      <header style={styles.header}>
+    <div style={styles.page} className="app-shell">
+      <header style={styles.header} className="app-header">
         <div>
           <div style={styles.eyebrow}>D&D Spell Manager</div>
           <h1 style={styles.title}>Spell preparation ved bordet</h1>
@@ -733,7 +733,7 @@ export default function App() {
       </header>
 
       {view === 'manage' ? (
-        <main style={styles.mainGrid}>
+        <main style={styles.mainGrid} className="manage-grid">
           <section style={styles.panel}>
             <h2 style={styles.panelTitle}>Character</h2>
 
@@ -967,7 +967,7 @@ export default function App() {
               </label>
             </div>
 
-            <div style={styles.spellGrid}>
+            <div style={styles.spellGrid} className="spell-grid">
               {availableSpells.map((spell) => (
                 <SpellCard
                   key={spell.id}
@@ -1017,7 +1017,7 @@ export default function App() {
           </section>
         </main>
       ) : (
-        <main style={styles.tableView}>
+        <main style={styles.tableView} className="table-view">
           <section style={styles.tableHeader}>
             <div>
               <h2 style={styles.tableTitle}>{character.name}</h2>
@@ -1077,7 +1077,7 @@ export default function App() {
             Object.entries(groupedSelectedSpells).map(([level, group]) => (
               <section key={level} style={styles.panel}>
                 <h2 style={styles.panelTitle}>{level}</h2>
-                <div style={styles.spellGrid}>
+                <div style={styles.spellGrid} className="spell-grid">
                   {group.map((spell) => (
                     <SpellCard
                       key={spell.id}
