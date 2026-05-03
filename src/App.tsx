@@ -1160,15 +1160,53 @@ function SpellCard({
   onConcentrate: () => void;
   compact: boolean;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <article style={styles.card}>
-      <div style={styles.cardTop}>
-        <div>
+    <article style={isOpen ? { ...styles.card, ...styles.cardOpen } : styles.card}>
+      <div style={styles.compactCardTop}>
+        <button
+          type="button"
+          style={styles.cardTextButton}
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
           <div style={styles.cardMeta}>
             {getSpellLevelLabel(spell.level)} · {spell.school}
           </div>
+
           <h3 style={styles.cardTitle}>{spell.name}</h3>
-        </div>
+
+          <div style={styles.compactTagLine}>
+            <span>{spell.castingTime}</span>
+            <span>·</span>
+            <span>{spell.range}</span>
+
+            {spell.concentration && (
+              <>
+                <span>·</span>
+                <span>Concentration</span>
+              </>
+            )}
+
+            {spell.ritual && (
+              <>
+                <span>·</span>
+                <span>Ritual</span>
+              </>
+            )}
+          </div>
+
+          {alwaysPrepared && (
+            <div style={styles.compactAlwaysPrepared}>
+              Always prepared
+              {alwaysPreparedSource ? ` · ${alwaysPreparedSource}` : ''}
+            </div>
+          )}
+
+          <div style={styles.compactHint}>
+            {isOpen ? 'Skjul detaljer' : 'Vis detaljer'}
+          </div>
+        </button>
 
         {!compact && (
           <button
@@ -1187,55 +1225,53 @@ function SpellCard({
         )}
       </div>
 
-      <div style={styles.statGrid}>
-        <div style={styles.statBox}>
-          <span>Casting</span>
-          {spell.castingTime}
-        </div>
-        <div style={styles.statBox}>
-          <span>Range</span>
-          {spell.range}
-        </div>
-        <div style={styles.statBox}>
-          <span>Duration</span>
-          {spell.duration}
-        </div>
-        <div style={styles.statBox}>
-          <span>Components</span>
-          {spell.components}
-        </div>
-      </div>
+      {isOpen && (
+        <>
+          <div style={styles.statGrid}>
+            <div style={styles.statBox}>
+              <span>Casting</span>
+              {spell.castingTime}
+            </div>
+            <div style={styles.statBox}>
+              <span>Range</span>
+              {spell.range}
+            </div>
+            <div style={styles.statBox}>
+              <span>Duration</span>
+              {spell.duration}
+            </div>
+            <div style={styles.statBox}>
+              <span>Components</span>
+              {spell.components}
+            </div>
+          </div>
 
-      <p style={styles.spellText}>{spell.text}</p>
+          <p style={styles.spellText}>{spell.text}</p>
 
-      {spell.damage && (
-        <div style={styles.damageBox}>
-          <strong>Effect:</strong> {spell.damage}
-        </div>
-      )}
+          {spell.damage && (
+            <div style={styles.damageBox}>
+              <strong>Effect:</strong> {spell.damage}
+            </div>
+          )}
 
-      {spell.scaling && (
-        <div style={styles.scalingBox}>
-          <strong>At higher levels:</strong> {spell.scaling}
-        </div>
-      )}
+          {spell.scaling && (
+            <div style={styles.scalingBox}>
+              <strong>At higher levels:</strong> {spell.scaling}
+            </div>
+          )}
 
-      <div style={styles.tags}>
-        {alwaysPrepared && (
-          <span style={styles.alwaysPreparedTag}>
-            Always prepared
-            {alwaysPreparedSource ? ` · ${alwaysPreparedSource}` : ''}
-          </span>
-        )}
-        {spell.concentration && <span style={styles.tag}>Concentration</span>}
-        {spell.ritual && <span style={styles.tag}>Ritual</span>}
-        {spell.level === 0 && <span style={styles.tag}>Cantrip</span>}
-      </div>
+          <div style={styles.tags}>
+            {spell.concentration && <span style={styles.tag}>Concentration</span>}
+            {spell.ritual && <span style={styles.tag}>Ritual</span>}
+            {spell.level === 0 && <span style={styles.tag}>Cantrip</span>}
+          </div>
 
-      {spell.concentration && (
-        <button style={styles.smallButton} onClick={onConcentrate}>
-          Start concentration
-        </button>
+          {spell.concentration && (
+            <button style={styles.smallButton} onClick={onConcentrate}>
+              Start concentration
+            </button>
+          )}
+        </>
       )}
     </article>
   );
@@ -1576,6 +1612,48 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid #292524',
     borderRadius: '18px',
     padding: '16px',
+    cardOpen: {
+      border: '1px solid #57534e',
+    },
+    compactCardTop: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      gap: '12px',
+      alignItems: 'flex-start',
+    },
+    cardTextButton: {
+      flex: 1,
+      border: '0',
+      background: 'transparent',
+      color: '#f5f5f4',
+      padding: 0,
+      textAlign: 'left',
+      cursor: 'pointer',
+    },
+    compactTagLine: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: '6px',
+      color: '#a8a29e',
+      fontSize: '13px',
+      marginTop: '6px',
+      lineHeight: 1.4,
+    },
+    compactHint: {
+      color: '#78716c',
+      fontSize: '12px',
+      marginTop: '8px',
+    },
+    compactAlwaysPrepared: {
+      marginTop: '8px',
+      background: '#14532d',
+      color: '#dcfce7',
+      border: '1px solid #166534',
+      borderRadius: '999px',
+      padding: '5px 9px',
+      fontSize: '12px',
+      display: 'inline-block',
+    },
   },
   cardTop: {
     display: 'flex',

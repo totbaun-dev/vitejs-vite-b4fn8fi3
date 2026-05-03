@@ -593,7 +593,9 @@ export const subclassSpellLists: SubclassSpellTable = {
 
 function getClassAlwaysPreparedSpellIds(character: Character) {
   const ids: string[] = [];
-
+  if (character.className === 'Paladin' && character.level >= 1) {
+    ids.push('divine-smite');
+  }
   if (character.className === 'Ranger' && character.level >= 1) {
     ids.push('hunters-mark');
   }
