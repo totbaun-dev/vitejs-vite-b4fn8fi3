@@ -557,56 +557,80 @@ export default function App() {
   }
 
   function toggleSpell(spellId: string) {
-    const spell = spells.find((item) => item.id === spellId);
-    if (!spell) return;
+  const spell = spells.find((item) => item.id === spellId);
+  if (!spell) return;
 
-    if (alwaysPreparedSpellIds.includes(spellId)) {
-      return;
-    }
+  if (alwaysPreparedSpellIds.includes(spellId)) {
+    return;
+  }
 
-    updateActiveStoredCharacter((storedCharacter) => {
-      const prev = storedCharacter.selectedSpellIds;
+  updateActiveStoredCharacter((storedCharacter) => {
+    const prev = storedCharacter.selectedSpellIds;
 
-      if (prev.includes(spellId)) {
-        return {
-          ...storedCharacter,
-          selectedSpellIds: prev.filter((id) => id !== spellId),
-        };
-      }
-
-      const currentSelectedSpells = prev
-        .map((id) => spells.find((item) => item.id === id))
-        .filter((item): item is Spell => Boolean(item))
-        .filter((item) => !alwaysPreparedSpellIds.includes(item.id));
-
-      if (spell.level === 0) {
-        const currentCantripCount = currentSelectedSpells.filter(
-          (item) => item.level === 0
-        ).length;
-
-        if (currentCantripCount >= cantripLimit) {
-          showToast('Du har valgt alle dine cantrips. Fjern en cantrip for at vælge en anden.');
-          return storedCharacter;
-        }
-      }
-
-      if (spell.level > 0) {
-        const currentPreparedCount = currentSelectedSpells.filter(
-          (item) => item.level > 0
-        ).length;
-
-        if (currentPreparedCount >= preparedSpellLimit) {
-          showToast('Du har valgt alle dine prepared spells. Fjern en spell for at vælge en anden.');
-          return storedCharacter;
-        }
-      }
-
+    if (prev.includes(spellId)) {
       return {
         ...storedCharacter,
-        selectedSpellIds: [...prev, spellId],
+        selectedSpellIds: prev.filter((id) => id !== spellId),
       };
-    });
-  }
+    }
+
+    const currentSelectedSpells = prev
+      .map((id) => spells.find((item) => item.id === id))
+      .filter((item): item is Spell => Boolean(item))
+      .filter((item) => !alwaysPreparedSpellIds.includes(item.id));
+
+    if (spell.level === 0) {
+      const currentCantripCount = currentSelectedSpells.filter(
+        (item) => item.level === 0
+      ).length;
+
+      if (currentCantripCount >= cantripLimit) {
+        showToast(
+          'Du har valgt alle dine cantrips. Fjern en cantrip for at vælge en anden.'
+        );
+        return storedCharacter;
+      }
+    }
+
+    if (spell.level > 0) {
+      const currentPreparedCount = currentSelectedSpells.filter(
+        (item) => item.level > 0
+      ).length;
+
+      if (currentPreparedCount >= preparedSpellLimit) {
+        showToast(
+          'Du har valgt alle dine prepared spells. Fjern en spell for at vælge en anden.'
+        );
+        return storedCharacter;
+      }
+    }
+
+    const nextSelectedSpellIds = [...prev, spellId];
+
+    if (spell.level === 0) {
+      const nextCantripCount =
+        currentSelectedSpells.filter((item) => item.level === 0).length + 1;
+
+      if (nextCantripCount === cantripLimit && cantripLimit > 0) {
+        showToast('Du har nu valgt alle dine cantrips.');
+      }
+    }
+
+    if (spell.level > 0) {
+      const nextPreparedCount =
+        currentSelectedSpells.filter((item) => item.level > 0).length + 1;
+
+      if (nextPreparedCount === preparedSpellLimit && preparedSpellLimit > 0) {
+        showToast('Du har nu valgt alle dine prepared spells.');
+      }
+    }
+
+    return {
+      ...storedCharacter,
+      selectedSpellIds: nextSelectedSpellIds,
+    };
+  });
+}
 
   function toggleSlot(slotLevel: string, index: number) {
     updateActiveStoredCharacter((storedCharacter) => {
