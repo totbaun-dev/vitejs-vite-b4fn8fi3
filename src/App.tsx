@@ -737,81 +737,77 @@ export default function App() {
           <section style={styles.panel}>
             <h2 style={styles.panelTitle}>Character</h2>
 
-            <label style={styles.label}>
-              Navn
-              <input
-                style={styles.input}
-                value={character.name}
-                onChange={(e) => updateCharacter({ name: e.target.value })}
-              />
-            </label>
+            <div className="character-form-grid">
+  <label style={styles.label} className="character-field-full">
+    Navn
+    <input
+      style={styles.input}
+      value={character.name}
+      onChange={(e) => updateCharacter({ name: e.target.value })}
+    />
+  </label>
 
-            <label style={styles.label}>
-              Class
-              <select
-                style={styles.input}
-                value={character.className}
-                onChange={(e) =>
-                  updateCharacter({ className: e.target.value as DndClass })
-                }
-              >
-                {classOptions.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            </label>
+  <label style={styles.label}>
+    Class
+    <select
+      style={styles.input}
+      value={character.className}
+      onChange={(e) =>
+        updateCharacter({ className: e.target.value as DndClass })
+      }
+    >
+      {classOptions.map((option) => (
+        <option key={option}>{option}</option>
+      ))}
+    </select>
+  </label>
 
-            <label style={styles.label}>
-              Subclass
-              <select
-                style={styles.input}
-                value={getCharacterSubclass(character)}
-                onChange={(e) => updateCharacter({ subclass: e.target.value })}
-              >
-                {getSubclassOptions(character.className).map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
-            </label>
+  <label style={styles.label}>
+    Level
+    <select
+      style={styles.input}
+      value={character.level}
+      onChange={(e) => updateCharacter({ level: Number(e.target.value) })}
+    >
+      {Array.from({ length: 20 }, (_, i) => i + 1).map((level) => (
+        <option key={level}>{level}</option>
+      ))}
+    </select>
+  </label>
 
-            <label style={styles.label}>
-              Level
-              <select
-                style={styles.input}
-                value={character.level}
-                onChange={(e) =>
-                  updateCharacter({ level: Number(e.target.value) })
-                }
-              >
-                {Array.from({ length: 20 }, (_, i) => i + 1).map((level) => (
-                  <option key={level}>{level}</option>
-                ))}
-              </select>
-            </label>
+  <label style={styles.label} className="character-field-full">
+    Subclass
+    <select
+      style={styles.input}
+      value={getCharacterSubclass(character)}
+      onChange={(e) => updateCharacter({ subclass: e.target.value })}
+    >
+      {getSubclassOptions(character.className).map((option) => (
+        <option key={option}>{option}</option>
+      ))}
+    </select>
+  </label>
 
-            <label style={styles.label}>
-              Spell Save DC
-              <input
-                style={styles.input}
-                value={character.spellSaveDc}
-                onChange={(e) =>
-                  updateCharacter({ spellSaveDc: e.target.value })
-                }
-                placeholder="Fx 14"
-              />
-            </label>
+  <label style={styles.label}>
+    Spell Save DC
+    <input
+      style={styles.input}
+      value={character.spellSaveDc}
+      onChange={(e) => updateCharacter({ spellSaveDc: e.target.value })}
+      placeholder="Fx 14"
+    />
+  </label>
 
-            <label style={styles.label}>
-              Spell Attack Bonus
-              <input
-                style={styles.input}
-                value={character.spellAttackBonus}
-                onChange={(e) =>
-                  updateCharacter({ spellAttackBonus: e.target.value })
-                }
-                placeholder="Fx +6"
-              />
-            </label>
+  <label style={styles.label}>
+    Spell Attack Bonus
+    <input
+      style={styles.input}
+      value={character.spellAttackBonus}
+      onChange={(e) => updateCharacter({ spellAttackBonus: e.target.value })}
+      placeholder="Fx +6"
+    />
+  </label>
+</div>
 
             <div style={styles.infoBox}>{classRules[character.className]}</div>
 
