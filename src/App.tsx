@@ -354,6 +354,7 @@ export default function App() {
   const [backupText, setBackupText] = useState('');
   const [importText, setImportText] = useState('');
   const [importMessage, setImportMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
 
   const activeStoredCharacter =
     characters.find((item) => item.id === activeCharacterId) ?? characters[0];
@@ -379,6 +380,13 @@ export default function App() {
       characters,
       activeCharacterId: activeStoredCharacter?.id ?? null,
     };
+    function showToast(message: string) {
+      setToastMessage(message);
+    
+      window.setTimeout(() => {
+        setToastMessage('');
+      }, 2200);
+    }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [characters, activeStoredCharacter?.id]);
@@ -577,6 +585,7 @@ export default function App() {
         ).length;
 
         if (currentCantripCount >= cantripLimit) {
+          showToast('Du har valgt alle dine cantrips. Fjern en cantrip for at vælge en anden.');
           return storedCharacter;
         }
       }
@@ -587,6 +596,7 @@ export default function App() {
         ).length;
 
         if (currentPreparedCount >= preparedSpellLimit) {
+          showToast('Du har valgt alle dine prepared spells. Fjern en spell for at vælge en anden.');
           return storedCharacter;
         }
       }
@@ -1096,6 +1106,12 @@ export default function App() {
             ))
           )}
         </main>
+      )}
+
+      {toastMessage && (
+        <div style={styles.toastMessage}>
+          {toastMessage}
+        </div>
       )}
     </div>
   );
@@ -1825,5 +1841,22 @@ const styles: Record<string, React.CSSProperties> = {
     color: '#a8a29e',
     fontSize: '13px',
     lineHeight: 1.5,
+  },
+  toastMessage: {
+    position: 'fixed',
+    left: '50%',
+    bottom: '22px',
+    transform: 'translateX(-50%)',
+    background: '#fbbf24',
+    color: '#1c1917',
+    border: '1px solid #f59e0b',
+    borderRadius: '14px',
+    padding: '12px 16px',
+    fontSize: '14px',
+    fontWeight: 700,
+    boxShadow: '0 12px 30px rgba(0, 0, 0, 0.35)',
+    zIndex: 9999,
+    maxWidth: 'calc(100vw - 32px)',
+    textAlign: 'center',
   },
 };
